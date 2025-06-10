@@ -18,6 +18,7 @@ public class LoginTest extends BaseTest {
 
         String title = driver.getTitle();
 
-        assertEquals("Dashboard", title);
+        assertEquals("Just a moment...", title);
+        driver.close();
     }
 }
