@@ -42,7 +42,7 @@ public class LoginTest {
     }
 
     @Test
-    public void testInvalidUsernameLogin(){
+    public void testInvalidUsername(){
         //Given
         loginPage.enterUsername("Admi");
         loginPage.enterPassword("admin123");
@@ -53,5 +53,36 @@ public class LoginTest {
         //Then
         String exception = loginPage.getExceptionMessage();
         assertEquals("Invalid credentials", exception);
+    }
+
+    @Test
+    public void testInvalidPassword(){
+        //Given
+        loginPage.enterUsername("Admin");
+        loginPage.enterPassword("admin");
+
+        //When
+        loginPage.clickLogin();
+
+        //Then
+        String exception = loginPage.getExceptionMessage();
+        assertEquals("Invalid credentials", exception);
+    }
+
+    @Test
+    public void testEmptyUsernameAndPassword(){
+        //Given
+        loginPage.enterUsername("");
+        loginPage.enterPassword("");
+
+        //When
+        loginPage.clickLogin();
+
+        //Then
+        String usernameException = loginPage.getUsernameRequiredException();
+        String passwordException = loginPage.getPasswordRequiredException();
+
+        assertEquals("Required", usernameException);
+        assertEquals("Required", passwordException);
     }
 }

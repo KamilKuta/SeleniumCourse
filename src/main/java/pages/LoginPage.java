@@ -15,7 +15,9 @@ public class LoginPage {
     private final By usernameTextBox = By.cssSelector("input[name='username']");
     private final By passwordTextBox = By.cssSelector("input[name='password']");
     private final By loginButton = By.cssSelector("button[type='submit']");
-    private final By exceptionMessage = By.cssSelector("p[class='oxd-text oxd-text--p oxd-alert-content-text']");
+    private final By invalidUsernameOrPasswordMessage = By.cssSelector("p[class='oxd-text oxd-text--p oxd-alert-content-text']");
+    private final By usernameRequiredInfo = By.xpath("(//span[contains(@class, 'oxd-input-field-error-message')])[1]");
+    private final By passwordRequiredInfo = By.xpath("(//span[contains(@class, 'oxd-input-field-error-message')])[2]");
 
     public LoginPage(WebDriver driver){
         this.driver = driver;
@@ -38,7 +40,17 @@ public class LoginPage {
     }
 
     public String getExceptionMessage(){
-        WebElement exceptionMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(this.exceptionMessage));
+        WebElement exceptionMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(invalidUsernameOrPasswordMessage));
         return exceptionMessage.getText();
+    }
+
+    public String getUsernameRequiredException(){
+        WebElement usernameException = wait.until(ExpectedConditions.visibilityOfElementLocated(usernameRequiredInfo));
+        return usernameException.getText();
+    }
+
+    public String getPasswordRequiredException(){
+        WebElement passwordException = wait.until(ExpectedConditions.visibilityOfElementLocated(passwordRequiredInfo));
+        return passwordException.getText();
     }
 }
