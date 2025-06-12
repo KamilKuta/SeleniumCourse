@@ -2,31 +2,43 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.sql.Driver;
+import java.time.Duration;
 
 public class LoginPage {
-    private WebDriver driver;
+    private final WebDriver driver;
+    private final WebDriverWait wait;
 
-    private By usernameTextBox = By.id("Email");
-    private By passwordTextBox = By.id("Password");
-    private By loginButton = By.xpath("//*[@id=\"main\"]/div/div/div/div[2]/div[1]/div/form/div[3]/button");
+    private final By usernameTextBox = By.cssSelector("input[name='username']");
+    private final By passwordTextBox = By.cssSelector("input[name='password']");
+    private final By loginButton = By.cssSelector("button[type='submit']");
+    private final By exceptionMessage = By.cssSelector("p[class='oxd-text oxd-text--p oxd-alert-content-text']");
 
     public LoginPage(WebDriver driver){
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     public void enterUsername(String username){
-        driver.findElement(usernameTextBox).clear();
-        driver.findElement(usernameTextBox).sendKeys(username);
+        WebElement usernameText = wait.until(ExpectedConditions.visibilityOfElementLocated(usernameTextBox));
+        usernameText.sendKeys(username);
     }
 
-    public void enterPassword(String password){
-        driver.findElement(passwordTextBox).clear();
-        driver.findElement(passwordTextBox).sendKeys(password);
+    public void enterPassword(String password) {
+        WebElement passwordText = wait.until(ExpectedConditions.visibilityOfElementLocated(passwordTextBox));
+        passwordText.sendKeys(password);
     }
 
     public void clickLogin(){
-        driver.findElement(loginButton).click();
+        WebElement loginButtonClickable = wait.until(ExpectedConditions.elementToBeClickable(loginButton));
+        loginButtonClickable.click();
+    }
+
+    public String getExceptionMessage(){
+        WebElement exceptionMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(this.exceptionMessage));
+        return exceptionMessage.getText();
     }
 }
